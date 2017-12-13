@@ -19,6 +19,8 @@ class ShowtimesController extends AppController
      */
     public function index()
     {
+        $this->paginate = ['contain' =>['Movies', 'Rooms']]; 
+        
         $showtimes = $this->paginate($this->Showtimes);
 
         $this->set(compact('showtimes'));

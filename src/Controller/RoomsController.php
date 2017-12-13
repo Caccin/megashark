@@ -44,9 +44,15 @@ class RoomsController extends AppController
         $this->set('room', $room);
         $this->set('showtimes', $showtimes);        
         $this->set('_serialize', ['room']);       
-        if ()
+        /* 
+         * if ($room = $id){
+             
+         }
+         * 
+         */
         
-    
+        
+        */
     }
 
     /**
