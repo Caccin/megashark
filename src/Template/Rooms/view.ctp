@@ -40,8 +40,8 @@
         </tr>
     </table>
     </table>
-        <div class="related">
-            <h4><?= __('Related Showtimes this week') ?></h4>
+        <div class="This week">
+            <h4><?= __('Showtimes this week') ?></h4>
             <ul>
             <table>            
                 <tr>
