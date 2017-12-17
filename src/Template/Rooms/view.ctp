@@ -11,7 +11,9 @@
         <li><?= $this->Form->postLink(__('Delete Room'), ['action' => 'delete', $room->id], ['confirm' => __('Are you sure you want to delete # {0}?', $room->id)]) ?> </li>
         <li><?= $this->Html->link(__('List Rooms'), ['action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New Room'), ['action' => 'add']) ?> </li>
-    </ul>
+         <li><?= $this->Html->link(__('List Showtimes'), ['controller' => 'Showtimes', 'action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('New Showtime'), ['controller' => 'Showtimes', 'action' => 'add']) ?> </li>  
+   </ul>
 </nav>
 <div class="rooms view large-9 medium-8 columns content">
     <h3><?= h($room->name) ?></h3>
@@ -37,57 +39,32 @@
             <td><?= h($room->modified) ?></td>
         </tr>
     </table>
-    <table border="1" cellpadding="15">
-   <tr>
-      <th>Lundi</th>
-      <th>Mardi</th>
-      <th>Mercredi</th>
-      <th>Jeudi</th>
-      <th>Vendredi</th>
-      <th>Samedi</th>
-      <th>Dimanche</th>
-   </tr>
-    <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-   </tr>
-    <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-   </tr>
-    <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-   </tr>
-    <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-   </tr>
-    <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-   </tr>
-    <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-   </tr>
-    <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-   </tr>
-    
+    </table>
+        <div class="related">
+            <h4><?= __('Related Showtimes this week') ?></h4>
+            <ul>
+            <table>            
+                <tr>
+                    <?php foreach($days as $day): ?>
+                        <td> <?= h($day) ?> </td> 
+                    <?php endforeach; ?>
+                </tr>
+                <tr>
+                    <?php for($i=1;$i<=7;$i++): ?>
+                        <td>
+                            <?php if(isset($week[$i])): ?>
+                                <?php foreach($week[$i] as $value): ?>
+                                        <ul>
+                                             <?= h($value->movie->name)?><br>
+                                             debut : <?= h($value->start->format('H:i')) ?><br>
+                                             fin : <?= h($value->end->format('H:i')) ?> 
+                                        </ul> 
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </td>
+                    <?php endfor; ?>
+                </tr>              
+            </table>
+            </ul>
+        </div>
 </div>

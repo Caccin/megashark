@@ -37,10 +37,11 @@ class ShowtimesController extends AppController
     public function view($id = null)
     {
         $showtime = $this->Showtimes->get($id, [
-            'contain' => []
+            'contain' => ['Movies','Rooms']
         ]);
 
         $this->set('showtime', $showtime);
+        $this->set(compact('movies','rooms'));
         $this->set('_serialize', ['showtime']);
     }
 
@@ -63,6 +64,7 @@ class ShowtimesController extends AppController
         }
         $movies = $this->Showtimes->Movies->find('list');
         $rooms = $this->Showtimes->Rooms->find('list');
+        $this->set(compact('showtime','movies','rooms'));
         $this->set(compact('showtime', 'rooms', 'movies'));
         $this->set('_serialize', ['showtime']);
      
@@ -77,6 +79,8 @@ class ShowtimesController extends AppController
      */
     public function edit($id = null)
     {
+        $movies = $this->Showtimes->Movies->find('list');
+        $rooms = $this->Showtimes->Rooms->find('list');
         $showtime = $this->Showtimes->get($id, [
             'contain' => []
         ]);
@@ -89,7 +93,7 @@ class ShowtimesController extends AppController
             }
             $this->Flash->error(__('The showtime could not be saved. Please, try again.'));
         }
-        $this->set(compact('showtime'));
+        $this->set(compact('showtime','movies','rooms'));
         $this->set('_serialize', ['showtime']);
     }
 
@@ -112,4 +116,41 @@ class ShowtimesController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function planning($id = null){
+        
+        $rooms = $this->Showtimes->Rooms->find('list');
+        $firstRoomId = (array_keys($rooms->toArray()))[0];
+        
+  
+        $showtimes = $this->Showtimes
+            ->find()
+            ->contain(['Movies','Rooms']);
+  
+        if ($this->request->is('post')) {
+            
+            $showtimes = $showtimes->where([
+                'room_id ' => $this->request->getData('room_id')
+           ]);
+        }    
+        else{
+            $showtimes = $showtimes
+                ->where(['room_id ' => $firstRoomId
+            ]); 
+        }
+        
+        $week = [];
+        $days=["","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
+        foreach($showtimes as $showtime){
+            $week[$showtime->start->format('N')][] = $showtime;     
+        }
+        
+        $this->set('rooms', $rooms);
+        $this->set('showtimes', $showtimes);
+        $this->set('week', $week);
+        $this->set('days', $days);
+        
+        $this->set('_serialize', ['room']);
+
+}
 }
